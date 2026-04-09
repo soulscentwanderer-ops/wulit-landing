@@ -335,9 +335,6 @@ const glass = (bg, bdr, blur = BL) => ({
   borderTop: bdr ? `1px solid ${bdr}` : 'none',
 })
 
-/* Section wrapper */
-const S = (extra = {}) => ({ padding: '88px 56px', maxWidth: 900, margin: '0 auto', ...extra })
-
 /* ═══════════════════════════════════════
    DATA
 ═══════════════════════════════════════ */
@@ -382,6 +379,12 @@ export default function App() {
   const [hPc,   setHPc]   = useState(null)
   const [hQa,   setHQa]   = useState(null)
   const [hBtn,  setHBtn]  = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+  }, [])
   const [mouse, setMouse] = useState({ x: 0, y: 0 })
   useEffect(() => {
     const fn = e => setMouse({
@@ -391,6 +394,12 @@ export default function App() {
     window.addEventListener('mousemove', fn)
     return () => window.removeEventListener('mousemove', fn)
   }, [])
+  const S = (extra = {}) => ({
+    padding: isMobile ? '64px 24px' : '88px 56px',
+    maxWidth: 900,
+    margin: '0 auto',
+    ...extra,
+  })
 
   return (
     <div style={{ fontFamily: C.cn, fontWeight: 300, color: C.ink, letterSpacing: '0.08em', cursor: 'none' }}>
@@ -508,19 +517,10 @@ export default function App() {
         <div style={{ position: 'absolute', top: 28, left: 40, zIndex: 10, opacity: 0.5 }}>
           <img src="/logo3.png" alt="吾光療域" style={{ height: 40, width: 'auto', maxWidth: 140, objectFit: 'contain', display: 'block' }} />
         </div>
-        <p style={{
-          position: 'absolute',
-          left: 56,
-          bottom: 56,
-          zIndex: 6,
-          fontFamily: C.ui,
-          fontSize: 12,
-          letterSpacing: '0.13em',
-          color: 'rgba(247,243,236,0.58)',
-          lineHeight: 1.9,
-        }}>
-          專為忙碌上班族設計的午休能量充電
-        </p>
+        <div style={{ position:'absolute', left:0, right:0, bottom:0, zIndex:6, padding: isMobile ? '36px 24px 56px' : '44px 56px 68px' }}>
+          <h1 style={{ fontFamily:C.cn, fontSize: isMobile ? 'clamp(32px,10vw,48px)' : 'clamp(34px,6vw,66px)', color:C.lt, fontWeight:300, lineHeight:1.2, letterSpacing:'0.04em', marginBottom:14, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>30分鐘 把自己接回來</h1>
+          <p style={{ fontFamily:C.ui, fontSize: isMobile ? 13 : 12, letterSpacing:'0.13em', color:'rgba(247,243,236,0.58)', lineHeight:1.9, whiteSpace:'normal' }}>Find your way back in 30 minutes.</p>
+        </div>
         <div
           aria-hidden
           style={{
@@ -716,8 +716,8 @@ export default function App() {
       <div style={glass('rgba(26,20,12,0.82)', 'rgba(212,168,48,0.08)')}>
         <div style={S()}>
           <Up><Label light>關於老吾 · 關於吾光</Label></Up>
-          <div style={{ display:'grid', gridTemplateColumns:'5fr 6fr', gap:52, alignItems:'start' }}>
-            <Up><ImgSlot src={IM.m05} alt="老吾" dark label="圖片 3" hint="public/images/3.jpg" style={{ width:'100%', minHeight:320, borderRadius:2 }}/></Up>
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '5fr 6fr', gap: isMobile ? 32 : 52, alignItems:'start' }}>
+            <Up><ImgSlot src={IM.m05} alt="老吾" dark label="圖片 3" hint="public/images/3.jpg" style={{ width:'100%', minHeight: isMobile ? 220 : 320, borderRadius:2 }}/></Up>
             <div>
               <Up delay={0.1}><div style={{ fontFamily:C.cn, fontSize:19, color:C.gold, marginBottom:13, letterSpacing:'0.06em', fontWeight:400 }}>麻瓜療癒師</div></Up>
               <Up delay={0.18}><h2 style={{ fontFamily:C.cn, fontSize:'clamp(17px,2.5vw,24px)', color:C.lt, fontWeight:300, lineHeight:1.45, letterSpacing:'0.05em', marginBottom:20, whiteSpace:'nowrap' }}>是透過練習而成的療癒者</h2></Up>
@@ -746,13 +746,13 @@ export default function App() {
               <img src="/images/9.png" alt="為什麼選擇吾光" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
           </Up>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, borderRadius:2, padding:12, ...cardGlassBase, background:'rgba(237,229,212,0.35)' }}>
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap:12, borderRadius:2, padding:12, ...cardGlassBase, background:'rgba(237,229,212,0.35)' }}>
             {FEATS.map((f,i)=>(
               <Up key={f.num} delay={0.1+i*0.1}>
                 <div data-h onMouseEnter={()=>setHFeat(i)} onMouseLeave={()=>setHFeat(null)}
                   style={{
                     ...cardGlassBase,
-                    padding: '34px 24px',
+                    padding: isMobile ? '28px 20px' : '34px 24px',
                     background: hFeat===i?'rgba(247,243,236,.78)':'rgba(247,243,236,.52)',
                     transition: 'all .3s ease',
                     transform: hFeat===i?'translateY(-3px)':'none',
@@ -760,7 +760,7 @@ export default function App() {
                   }}>
                   <div style={{marginBottom:13}}><f.I/></div>
                   <div style={{fontFamily:C.ui,fontSize:8,letterSpacing:'0.16em',color:C.goldD,marginBottom:9}}>{f.num}</div>
-                  <div style={{fontFamily:C.cn,fontSize:17,color:C.ink,lineHeight:1.4,letterSpacing:'0.06em',marginBottom:11}}>{f.title}</div>
+                  <div style={{fontFamily:C.cn,fontSize:17,color:C.ink,lineHeight:1.4,letterSpacing:'0.06em',marginBottom:11,wordBreak:'keep-all'}}>{f.title}</div>
                   <div style={{fontFamily:C.ui,fontSize:12,color:deepInk(0.5),lineHeight:1.95,letterSpacing:'0.05em'}}>{f.desc.split('\n').map((l,j)=><div key={j}>{l}</div>)}</div>
                 </div>
               </Up>
@@ -773,11 +773,11 @@ export default function App() {
       <div style={glass('rgba(247,243,236,0.74)', 'rgba(247,243,236,0.6)')}>
         <div style={S()}>
           <Up><Label>體驗流程</Label></Up>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 0, alignItems: 'start' }}>
             {STEPS.map((s,i)=>(
               <Up key={s.n} delay={0.1+i*0.12}>
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', position:'relative', padding:'0 32px' }}>
-                  {i < 2 && (
+                <div style={{ display:'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: isMobile ? 'flex-start' : 'center', textAlign: isMobile ? 'left' : 'center', position:'relative', padding: isMobile ? '0 0 24px 0' : '0 32px', gap: isMobile ? 20 : 0 }}>
+                  {!isMobile && i < 2 && (
                     <div style={{
                       position:'absolute',
                       top: 40,
@@ -788,7 +788,7 @@ export default function App() {
                       zIndex: 0,
                     }}/>
                   )}
-                  {i > 0 && (
+                  {!isMobile && i > 0 && (
                     <div style={{
                       position:'absolute',
                       top: 40,
@@ -799,47 +799,60 @@ export default function App() {
                       zIndex: 0,
                     }}/>
                   )}
+                  {isMobile && i < STEPS.length - 1 && (
+                    <div style={{
+                      position:'absolute',
+                      left: 31,
+                      bottom: -4,
+                      width: 1,
+                      height: 32,
+                      background:'rgba(176,122,18,0.18)',
+                      zIndex: 0,
+                    }}/>
+                  )}
 
                   <div style={{
-                    width: 80, height: 80,
+                    width: isMobile ? 64 : 80, height: isMobile ? 64 : 80,
                     borderRadius: '50%',
                     border: '1px solid rgba(201,146,10,0.3)',
                     background: 'rgba(201,146,10,0.05)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginBottom: 24,
+                    marginBottom: isMobile ? 0 : 24,
                     position: 'relative', zIndex: 1,
+                    flexShrink: 0,
                   }}>
                     <img src={['/images/5.png', '/images/6.png', '/images/7.png'][i]} style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%' }} />
                   </div>
+                  <div>
+                    <div style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontSize: 11, fontStyle:'italic',
+                      color: 'rgba(176,122,18,0.45)',
+                      letterSpacing: '0.2em',
+                      marginBottom: 10,
+                    }}>
+                      {s.n}
+                    </div>
 
-                  <div style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontSize: 11, fontStyle:'italic',
-                    color: 'rgba(176,122,18,0.45)',
-                    letterSpacing: '0.2em',
-                    marginBottom: 10,
-                  }}>
-                    {s.n}
-                  </div>
+                    <div style={{
+                      fontFamily: "'Noto Serif TC', Georgia, serif",
+                      fontSize: 18,
+                      color: '#1A1714',
+                      letterSpacing: '0.06em',
+                      marginBottom: 14,
+                    }}>
+                      {s.t}
+                    </div>
 
-                  <div style={{
-                    fontFamily: "'Noto Serif TC', Georgia, serif",
-                    fontSize: 18,
-                    color: '#1A1714',
-                    letterSpacing: '0.06em',
-                    marginBottom: 14,
-                  }}>
-                    {s.t}
-                  </div>
-
-                  <div style={{
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    fontSize: 12,
-                    color: 'rgba(26,23,20,0.5)',
-                    lineHeight: 2,
-                    letterSpacing: '0.06em',
-                  }}>
-                    {s.d.split('\n').map((l, j) => <div key={j}>{l}</div>)}
+                    <div style={{
+                      fontFamily: 'system-ui, -apple-system, sans-serif',
+                      fontSize: 12,
+                      color: 'rgba(26,23,20,0.5)',
+                      lineHeight: 2,
+                      letterSpacing: '0.06em',
+                    }}>
+                      {s.d.split('\n').map((l, j) => <div key={j}>{l}</div>)}
+                    </div>
                   </div>
                 </div>
               </Up>
@@ -915,6 +928,47 @@ export default function App() {
               </Up>
             ))}
           </div>
+          <Up delay={0.3}>
+            <div style={{ marginTop: 40, textAlign: 'center' }}>
+              <a
+                href="https://line.me/R/ti/p/@103xydjx"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'inline-block',
+                  padding: '14px 48px',
+                  border: '1px solid #C9920A',
+                  color: '#C9920A',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontSize: 11,
+                  letterSpacing: '0.22em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  borderRadius: 1,
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#C9920A'
+                  e.currentTarget.style.color = '#F7F3EC'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = '#C9920A'
+                }}
+              >
+                LINE 預約
+              </a>
+              <div style={{
+                marginTop: 10,
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontSize: 10,
+                letterSpacing: '0.16em',
+                color: 'rgba(201,146,10,0.35)',
+              }}>
+                @103xydjx
+              </div>
+            </div>
+          </Up>
         </div>
       </div>
 
