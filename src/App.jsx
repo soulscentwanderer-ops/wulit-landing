@@ -36,7 +36,7 @@ const pillBtn = (hover) => ({
   padding: '8px 20px',
   borderRadius: 20,
   border: 'none',
-  cursor: 'none',
+  cursor: 'pointer',
   background: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
   color: C.ink,
   textDecoration: 'none',
@@ -80,38 +80,6 @@ function Up({ children, delay = 0, y = 20, style = {} }) {
     }}>
       {children}
     </div>
-  )
-}
-
-/* ═══════════════════════════════════════
-   CURSOR
-═══════════════════════════════════════ */
-function Cursor() {
-  const [pos, setPos] = useState({ x: -200, y: -200 })
-  const [big, setBig] = useState(false)
-  useEffect(() => {
-    const move = e => setPos({ x: e.clientX, y: e.clientY })
-    const over = e => { if (e.target.closest('button,a,[data-h]')) setBig(true) }
-    const out  = e => { if (e.target.closest('button,a,[data-h]')) setBig(false) }
-    window.addEventListener('mousemove', move)
-    document.addEventListener('mouseover', over)
-    document.addEventListener('mouseout', out)
-    return () => {
-      window.removeEventListener('mousemove', move)
-      document.removeEventListener('mouseover', over)
-      document.removeEventListener('mouseout', out)
-    }
-  }, [])
-  const s = big ? 44 : 9
-  return (
-    <div style={{
-      position: 'fixed', zIndex: 9999, pointerEvents: 'none',
-      left: pos.x - s/2, top: pos.y - s/2,
-      width: s, height: s, borderRadius: '50%',
-      background: big ? 'rgba(201,146,10,0.13)' : 'rgba(201,146,10,0.65)',
-      border: big ? '1px solid rgba(201,146,10,0.35)' : 'none',
-      transition: 'all 0.25s cubic-bezier(0.4,0,0.2,1)',
-    }} />
   )
 }
 
@@ -374,12 +342,11 @@ export default function App() {
   })
 
   return (
-    <div style={{ fontFamily: C.cn, fontWeight: 300, color: C.ink, letterSpacing: '0.08em', cursor: 'none', overflowX: 'hidden' }}>
+    <div style={{ fontFamily: C.cn, fontWeight: 300, color: C.ink, letterSpacing: '0.08em', overflowX: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { cursor: none !important; }
         @keyframes haloDrift {
           0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
           33% { transform: translate(4%, -3%) scale(1.06); opacity: 0.72; }
@@ -437,7 +404,6 @@ export default function App() {
         <div style={{ position:'absolute', top:'48%', left:'32%', width:340, height:340, borderRadius:'50%', background:'radial-gradient(circle,rgba(237,229,212,.35) 0%,transparent 68%)', transform: `translate(${mouse.x * 0.8}px, ${mouse.y * 0.8}px)`, transition: 'transform 0.9s cubic-bezier(0.4,0,0.2,1)' }}/>
       </div>
 
-      <Cursor />
       <ScrollBar />
 
       {/* ══ M01 HERO：滿版影片 + logo ══ */}
@@ -829,7 +795,7 @@ export default function App() {
               <Up key={tag} delay={0.1+i*0.08}>
                 <button data-h onMouseEnter={()=>setHTag(i)} onMouseLeave={()=>setHTag(null)}
                   style={{
-                    fontFamily:C.ui, fontSize:11, letterSpacing:'0.12em', padding:'8px 20px', borderRadius:20, border:'none', cursor:'none',
+                    fontFamily:C.ui, fontSize:11, letterSpacing:'0.12em', padding:'8px 20px', borderRadius:20, border:'none', cursor:'pointer',
                     background: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
                     color:C.ink, transform:hTag===i?'translateY(-2px) scale(1.04)':'none', transition:'all .25s cubic-bezier(.4,0,.2,1)',
                     boxShadow:hTag===i?`0 4px 16px rgba(201,146,10,.28)`:'0 1px 8px rgba(176,122,18,.12)',
@@ -884,7 +850,7 @@ export default function App() {
                     background: hFeat===i?'rgba(247,243,236,.78)':'rgba(247,243,236,.52)',
                     transition: 'all .3s ease',
                     transform: hFeat===i?'translateY(-3px)':'none',
-                    cursor: 'none',
+                    cursor: 'pointer',
                   }}>
                   <div style={{marginBottom:13}}><f.I/></div>
                   <div style={{fontFamily:C.ui,fontSize:8,letterSpacing:'0.16em',color:C.goldD,marginBottom:9}}>{f.num}</div>
@@ -1020,7 +986,7 @@ export default function App() {
                     background: hPc===i?'rgba(247,243,236,.62)':'rgba(247,243,236,.42)',
                     transition: 'all .3s ease',
                     transform: hPc===i?'translateY(-3px)':'none',
-                    cursor: 'none',
+                    cursor: 'pointer',
                     minHeight: '100%',
                     display: 'flex',
                     flexDirection: 'column',
@@ -1101,7 +1067,7 @@ export default function App() {
                     padding: '20px 22px',
                     paddingLeft: hQa === i ? 26 : 22,
                     transition: 'padding .25s ease',
-                    cursor: 'none',
+                    cursor: 'pointer',
                     ...cardGlassBase,
                     background: 'rgba(247,243,236,0.52)',
                   }}>
