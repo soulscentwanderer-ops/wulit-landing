@@ -730,95 +730,94 @@ export default function App() {
             }}>
               不需要你相信什麼 · 不需要進入任何狀態 · 你只要帶著自己，躺下來就好
             </p>
-            {isMobile ? (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {M03_CMP_ROWS.map((row, ri) => (
-                  <div key={ri} style={{ display: 'contents' }}>
-                    <div style={{
-                      padding: '12px',
-                      border: '1px solid rgba(201,146,10,0.22)',
-                      background: 'rgba(201,146,10,0.08)',
-                    }}>
-                      <div style={{ fontFamily: C.ui, fontSize: 'clamp(0.72rem, 2vw, 0.8rem)', letterSpacing: '0.12em', color: 'rgba(247,243,236,0.5)', marginBottom: 6 }}>
-                        靈氣
-                      </div>
-                      <div style={{ fontFamily: C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.02rem)', letterSpacing: '0.05em', lineHeight: 1.6, color: '#F7F3EC' }}>
-                        <span style={{ color: 'rgba(247,243,236,0.6)', marginRight: 6 }}>{row.a}：</span>
-                        {row.v[0]}
-                      </div>
-                    </div>
-                    <div style={{
-                      padding: '12px',
-                      border: '1px solid rgba(247,243,236,0.16)',
-                      background: 'rgba(247,243,236,0.04)',
-                    }}>
-                      <div style={{ fontFamily: C.ui, fontSize: 'clamp(0.72rem, 2vw, 0.8rem)', letterSpacing: '0.12em', color: 'rgba(247,243,236,0.5)', marginBottom: 6 }}>
-                        其他方式
-                      </div>
-                      <div style={{ fontFamily: C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.02rem)', letterSpacing: '0.05em', lineHeight: 1.6, color: 'rgba(247,243,236,0.76)' }}>
-                        <span style={{ color: 'rgba(247,243,236,0.5)', marginRight: 6 }}>{row.a}：</span>
-                        {row.v.slice(1).join(' / ')}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <div style={{ minWidth: 560 }}>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '140px repeat(4,1fr)',
-                  borderBottom: '1px solid rgba(247,243,236,0.15)',
-                }}>
-                  <div style={{ padding: '10px 12px' }}/>
-                  {['靈氣充電', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
-                    <div key={h} style={{
-                      padding: '10px 12px',
-                      fontFamily: C.ui,
-                      fontSize: 9,
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color: i === 0 ? '#D4A830' : 'rgba(247,243,236,0.35)',
-                      borderBottom: i === 0 ? '2px solid #C9920A' : 'none',
-                      marginBottom: i === 0 ? -1 : 0,
-                    }}>{h}</div>
-                  ))}
-                </div>
-                {M03_CMP_ROWS.map((row, ri) => (
-                  <div key={ri} style={{
-                    display: 'grid',
-                    gridTemplateColumns: '140px repeat(4,1fr)',
-                    borderBottom: '1px solid rgba(247,243,236,0.08)',
-                  }}>
-                    <div style={{
-                      padding: '12px',
-                      fontFamily: C.ui,
-                      fontSize: 10,
-                      letterSpacing: '0.08em',
-                      color: 'rgba(247,243,236,0.4)',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}>{row.a}</div>
-                    {row.v.map((v, vi) => (
-                      <div key={vi} style={{
-                        padding: '12px',
-                        fontSize: 12,
-                        letterSpacing: '0.05em',
-                        lineHeight: 1.5,
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: row.hi[vi] ? '#F7F3EC' : 'rgba(247,243,236,0.35)',
-                        background: row.hi[vi] ? 'rgba(201,146,10,0.12)' : 'transparent',
-                        borderLeft: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
-                        borderRight: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
-                        fontWeight: row.hi[vi] ? 400 : 300,
-                      }}>{v}</div>
+            <div style={{
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              marginLeft: isMobile ? '-20px' : 0,
+              marginRight: isMobile ? '-20px' : 0,
+              paddingLeft: isMobile ? '20px' : 0,
+              paddingRight: isMobile ? '20px' : 0,
+            }}>
+              <table
+                style={{
+                  width: '100%',
+                  minWidth: 680,
+                  borderCollapse: 'collapse',
+                  tableLayout: 'fixed',
+                }}
+              >
+                <colgroup>
+                  <col style={{ width: 110 }}/>
+                  <col style={{ width: 170 }}/>
+                  <col style={{ width: 130 }}/>
+                  <col style={{ width: 120 }}/>
+                  <col style={{ width: 130 }}/>
+                </colgroup>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid rgba(247,243,236,0.15)' }}>
+                    <th style={{ padding: '10px 12px' }}/>
+                    {['靈氣充電', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
+                      <th
+                        key={h}
+                        style={{
+                          padding: '10px 12px',
+                          fontFamily: C.ui,
+                          fontSize: 9,
+                          letterSpacing: '0.15em',
+                          textTransform: 'uppercase',
+                          color: i === 0 ? '#D4A830' : 'rgba(247,243,236,0.35)',
+                          borderBottom: i === 0 ? '2px solid #C9920A' : 'none',
+                          marginBottom: i === 0 ? -1 : 0,
+                          textAlign: 'left',
+                          fontWeight: 400,
+                        }}
+                      >
+                        {h}
+                      </th>
                     ))}
-                  </div>
-                ))}
-              </div>
+                  </tr>
+                </thead>
+                <tbody>
+                  {M03_CMP_ROWS.map((row, ri) => (
+                    <tr key={ri} style={{ borderBottom: '1px solid rgba(247,243,236,0.08)' }}>
+                      <td style={{
+                        padding: '12px',
+                        fontFamily: C.ui,
+                        fontSize: 10,
+                        letterSpacing: '0.08em',
+                        color: 'rgba(247,243,236,0.4)',
+                        verticalAlign: 'middle',
+                      }}>{row.a}</td>
+                      {row.v.map((v, vi) => (
+                        <td key={vi} style={{
+                          padding: '12px',
+                          fontSize: 12,
+                          letterSpacing: '0.05em',
+                          lineHeight: 1.5,
+                          color: row.hi[vi] ? '#F7F3EC' : 'rgba(247,243,236,0.35)',
+                          background: row.hi[vi] ? 'rgba(201,146,10,0.12)' : 'transparent',
+                          borderLeft: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
+                          borderRight: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
+                          fontWeight: row.hi[vi] ? 400 : 300,
+                          verticalAlign: 'middle',
+                        }}>{v}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+            {isMobile && (
+              <p style={{
+                fontFamily: C.ui,
+                fontSize: 10,
+                letterSpacing: '0.12em',
+                color: 'rgba(201,146,10,0.45)',
+                textAlign: 'center',
+                marginTop: 10,
+              }}>
+                ← 左右滑動查看比較 →
+              </p>
             )}
           </div>
         </div>
