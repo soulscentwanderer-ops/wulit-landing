@@ -319,9 +319,14 @@ export default function App() {
   const [hPc,   setHPc]   = useState(null)
   const [hQa,   setHQa]   = useState(null)
   const [hBtn,  setHBtn]  = useState(false)
+  const [hHeroBtn, setHHeroBtn] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024)
   useEffect(() => {
-    const fn = () => setIsMobile(window.innerWidth < 768)
+    const fn = () => {
+      setIsMobile(window.innerWidth < 768)
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024)
+    }
     window.addEventListener('resize', fn)
     return () => window.removeEventListener('resize', fn)
   }, [])
@@ -335,8 +340,11 @@ export default function App() {
     return () => window.removeEventListener('mousemove', fn)
   }, [])
   const S = (extra = {}) => ({
-    padding: isMobile ? '64px 24px' : '88px 56px',
-    maxWidth: 900,
+    paddingTop: isMobile ? 60 : 100,
+    paddingBottom: isMobile ? 60 : 100,
+    paddingLeft: isMobile ? 20 : (isTablet ? 32 : 64),
+    paddingRight: isMobile ? 20 : (isTablet ? 32 : 64),
+    maxWidth: 780,
     margin: '0 auto',
     ...extra,
   })
@@ -407,7 +415,7 @@ export default function App() {
       <ScrollBar />
 
       {/* ══ M01 HERO：滿版影片 + logo ══ */}
-      <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', background: '#14110e' }}>
+      <div style={{ minHeight: isMobile ? '85svh' : '90vh', position: 'relative', overflow: 'hidden', background: '#14110e' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', overflow: 'hidden' }}>
           <div className="wulit-halo-hero-a" />
           <div className="wulit-halo-hero-b" />
@@ -447,68 +455,74 @@ export default function App() {
           top: 0,
           bottom: 0,
           zIndex: 6,
-          padding: isMobile ? '32px 24px 52px' : '44px 56px 68px',
-          textAlign: 'center',
+          padding: isMobile ? '32px 24px 100px' : '44px 56px 120px',
+          textAlign: isMobile ? 'center' : 'left',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: isMobile ? 'center' : 'flex-start',
+          justifyContent: 'flex-end',
         }}>
-          <div style={{
-            width: 52,
-            height: 52,
-            borderRadius: '50%',
-            border: '1px solid rgba(201,146,10,0.55)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: C.cn,
-            fontSize: 11,
-            color: 'rgba(201,146,10,0.7)',
-            marginBottom: 28,
-          }}>
-            吾光
-          </div>
           <Up delay={0.28}>
             <p style={{
               fontFamily: "'Noto Serif TC', Georgia, serif",
-              fontSize: isMobile ? '3.5vw' : 'clamp(11px, 1.8vw, 15px)',
-              letterSpacing: '0.13em',
-              color: 'rgba(247,243,236,0.72)',
+              fontSize: isMobile ? '0.9rem' : '1.1rem',
+              letterSpacing: '0.12em',
+              color: 'rgba(247,243,236,1)',
               lineHeight: 2,
               marginBottom: 6,
               wordBreak: 'keep-all',
-              textAlign: 'center',
-              maxWidth: isMobile ? '80vw' : 480,
+              textAlign: isMobile ? 'center' : 'left',
+              maxWidth: isMobile ? '80vw' : 560,
             }}>
-              專為忙碌上班族設計的午休能量充電
+              專為忙碌上班族設計的能量快充
             </p>
           </Up>
           <h1 style={{
             fontFamily: C.cn,
-            fontSize: isMobile ? '9vw' : 'clamp(36px,6vw,68px)',
+            fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
             fontWeight: 300,
             lineHeight: 1.2,
             letterSpacing: isMobile ? '0.02em' : '0.04em',
             marginBottom: 14,
             whiteSpace: isMobile ? 'normal' : 'nowrap',
-            textAlign: 'center',
+            textAlign: isMobile ? 'center' : 'left',
             background: 'linear-gradient(135deg, #F7F3EC 0%, #D4A830 45%, #F7F3EC 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             color: 'transparent',
           }}>30分鐘 把自己接回來</h1>
+          <a
+            data-h
+            href="https://line.me/R/ti/p/@103xydjx"
+            target="_blank"
+            rel="noreferrer"
+            onMouseEnter={() => setHHeroBtn(true)}
+            onMouseLeave={() => setHHeroBtn(false)}
+            style={{
+              ...pillBtn(hHeroBtn),
+              padding: isMobile ? '14px 40px' : '15px 52px',
+              fontSize: 11,
+              minHeight: 48,
+              width: isMobile ? '100%' : 'auto',
+              maxWidth: isMobile ? 280 : 'none',
+              marginTop: 32,
+              position: 'relative',
+              zIndex: 2,
+            }}
+          >
+            預約充電
+          </a>
           <Up delay={0.46}>
             <p style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: isMobile ? '3.5vw' : 'clamp(11px, 1.8vw, 15px)',
+              fontSize: isMobile ? '0.9rem' : '1.1rem',
               fontStyle: 'italic',
               letterSpacing: '0.1em',
-              color: 'rgba(247,243,236,0.45)',
+              color: 'rgba(247,243,236,0.9)',
               lineHeight: 1.8,
-              textAlign: 'center',
-              maxWidth: isMobile ? '80vw' : 480,
+              textAlign: isMobile ? 'center' : 'left',
+              maxWidth: isMobile ? '80vw' : 560,
             }}>
               Find your way back in 30 minutes.
             </p>
@@ -577,19 +591,21 @@ export default function App() {
                   }}>
                     <div style={{
                       fontFamily: C.cn,
-                      fontSize: 18,
+                      fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
                       color: C.ink,
                       letterSpacing: '0.06em',
                       lineHeight: 1.45,
                       marginBottom: 14,
                       fontWeight: 400,
+                      textAlign: isMobile ? 'center' : 'left',
                     }}>{c.title}</div>
                     <div style={{
                       fontFamily: C.ui,
-                      fontSize: 13,
+                      fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
                       color: deepInk(0.52),
                       lineHeight: 2,
                       letterSpacing: '0.05em',
+                      textAlign: isMobile ? 'center' : 'left',
                     }}>
                       {c.lines.map((line, li) => (
                         <p key={li} style={{ marginBottom: li < c.lines.length - 1 ? 6 : 0 }}>{line}</p>
@@ -604,7 +620,7 @@ export default function App() {
             textAlign: 'center',
             marginTop: 48,
             fontFamily: C.cn,
-            fontSize: isMobile ? 18 : 22,
+            fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
             color: C.goldD,
             letterSpacing: '0.06em',
             lineHeight: 1.65,
@@ -647,7 +663,10 @@ export default function App() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            padding: isMobile ? '48px 24px' : '64px 64px',
+            paddingTop: isMobile ? 60 : 100,
+            paddingBottom: isMobile ? 60 : 100,
+            paddingLeft: isMobile ? 20 : (isTablet ? 32 : 64),
+            paddingRight: isMobile ? 20 : (isTablet ? 32 : 64),
             zIndex: 2,
             overflowY: isMobile ? 'auto' : 'visible',
           }}>
@@ -667,7 +686,7 @@ export default function App() {
             </div>
             <p style={{
               fontFamily: C.cn,
-              fontSize: isMobile ? 16 : 20,
+              fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
               lineHeight: 1.8,
               letterSpacing: '0.06em',
               color: '#F7F3EC',
@@ -675,20 +694,30 @@ export default function App() {
               wordBreak: 'keep-all',
             }}>
               靈氣是一種
-              <span style={{ color: '#D4A830' }}>非接觸式</span>
-              的能量調頻方式
+              <span style={{ color: '#C9920A', fontWeight: '500' }}>能量調頻</span>
+              的療癒方式
             </p>
             <p style={{
               fontFamily: C.cn,
-              fontSize: isMobile ? 16 : 20,
+              fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
               lineHeight: 1.8,
               letterSpacing: '0.06em',
               color: '#F7F3EC',
               marginBottom: 16,
               wordBreak: 'keep-all',
             }}>
-              透過雙手懸停傳導，
-              <span style={{ color: '#D4A830' }}>溫柔整理你的能量場</span>
+              透過療癒者傳導宇宙靈氣，可選擇非接觸或是遠距形式
+            </p>
+            <p style={{
+              fontFamily: C.cn,
+              fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
+              lineHeight: 1.8,
+              letterSpacing: '0.06em',
+              color: '#F7F3EC',
+              marginBottom: 16,
+              wordBreak: 'keep-all',
+            }}>
+              以你覺得舒適的形式，溫柔整理你的能量場
             </p>
             <p style={{
               fontFamily: C.ui,
@@ -701,18 +730,49 @@ export default function App() {
             }}>
               不需要你相信什麼 · 不需要進入任何狀態 · 你只要帶著自己，躺下來就好
             </p>
-            <div style={{ overflowX: 'auto' }}>
-              <div style={{ minWidth: isMobile ? 320 : 560 }}>
+            {isMobile ? (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                {M03_CMP_ROWS.map((row, ri) => (
+                  <div key={ri} style={{ display: 'contents' }}>
+                    <div style={{
+                      padding: '12px',
+                      border: '1px solid rgba(201,146,10,0.22)',
+                      background: 'rgba(201,146,10,0.08)',
+                    }}>
+                      <div style={{ fontFamily: C.ui, fontSize: 'clamp(0.72rem, 2vw, 0.8rem)', letterSpacing: '0.12em', color: 'rgba(247,243,236,0.5)', marginBottom: 6 }}>
+                        靈氣
+                      </div>
+                      <div style={{ fontFamily: C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.02rem)', letterSpacing: '0.05em', lineHeight: 1.6, color: '#F7F3EC' }}>
+                        <span style={{ color: 'rgba(247,243,236,0.6)', marginRight: 6 }}>{row.a}：</span>
+                        {row.v[0]}
+                      </div>
+                    </div>
+                    <div style={{
+                      padding: '12px',
+                      border: '1px solid rgba(247,243,236,0.16)',
+                      background: 'rgba(247,243,236,0.04)',
+                    }}>
+                      <div style={{ fontFamily: C.ui, fontSize: 'clamp(0.72rem, 2vw, 0.8rem)', letterSpacing: '0.12em', color: 'rgba(247,243,236,0.5)', marginBottom: 6 }}>
+                        其他方式
+                      </div>
+                      <div style={{ fontFamily: C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.02rem)', letterSpacing: '0.05em', lineHeight: 1.6, color: 'rgba(247,243,236,0.76)' }}>
+                        <span style={{ color: 'rgba(247,243,236,0.5)', marginRight: 6 }}>{row.a}：</span>
+                        {row.v.slice(1).join(' / ')}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <div style={{ minWidth: 560 }}>
                 <div style={{
                   display: 'grid',
-                  gridTemplateColumns: isMobile ? '100px 1fr' : '140px repeat(4,1fr)',
+                  gridTemplateColumns: '140px repeat(4,1fr)',
                   borderBottom: '1px solid rgba(247,243,236,0.15)',
                 }}>
                   <div style={{ padding: '10px 12px' }}/>
-                  {(isMobile
-                    ? ['靈氣充電']
-                    : ['靈氣充電', '芳療按摩', '冥想', '瑜伽健身']
-                  ).map((h, i) => (
+                  {['靈氣充電', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
                     <div key={h} style={{
                       padding: '10px 12px',
                       fontFamily: C.ui,
@@ -728,7 +788,7 @@ export default function App() {
                 {M03_CMP_ROWS.map((row, ri) => (
                   <div key={ri} style={{
                     display: 'grid',
-                    gridTemplateColumns: isMobile ? '100px 1fr' : '140px repeat(4,1fr)',
+                    gridTemplateColumns: '140px repeat(4,1fr)',
                     borderBottom: '1px solid rgba(247,243,236,0.08)',
                   }}>
                     <div style={{
@@ -740,7 +800,7 @@ export default function App() {
                       display: 'flex',
                       alignItems: 'center',
                     }}>{row.a}</div>
-                    {(isMobile ? [row.v[0]] : row.v).map((v, vi) => (
+                    {row.v.map((v, vi) => (
                       <div key={vi} style={{
                         padding: '12px',
                         fontSize: 12,
@@ -751,7 +811,7 @@ export default function App() {
                         color: row.hi[vi] ? '#F7F3EC' : 'rgba(247,243,236,0.35)',
                         background: row.hi[vi] ? 'rgba(201,146,10,0.12)' : 'transparent',
                         borderLeft: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
-                        borderRight: !isMobile && row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
+                        borderRight: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
                         fontWeight: row.hi[vi] ? 400 : 300,
                       }}>{v}</div>
                     ))}
@@ -759,6 +819,7 @@ export default function App() {
                 ))}
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>
@@ -786,8 +847,8 @@ export default function App() {
             </video>
           </Up>
           <Up delay={0.2}>
-            <p style={{ fontFamily:C.cn, fontSize: isMobile ? 17 : 'clamp(17px,2.3vw,23px)', lineHeight:1.85, letterSpacing:'0.06em', color:C.ink, marginBottom:8, wordBreak:'keep-all' }}><span style={{color:C.goldD,fontWeight:400}}>非接觸式</span>能量調頻，穿著上班服即可</p>
-            <p style={{ fontFamily:C.cn, fontSize: isMobile ? 17 : 'clamp(17px,2.3vw,23px)', lineHeight:1.85, letterSpacing:'0.06em', color:C.ink, wordBreak:'keep-all' }}>30分鐘後，帶著清爽的狀態回去工作</p>
+            <p style={{ fontFamily:C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.05rem)', lineHeight:1.85, letterSpacing:'0.06em', color:C.ink, marginBottom:8, wordBreak:'keep-all' }}>能量調頻療癒，穿著上班服即可</p>
+            <p style={{ fontFamily:C.cn, fontSize: 'clamp(0.9rem, 2vw, 1.05rem)', lineHeight:1.85, letterSpacing:'0.06em', color:C.ink, wordBreak:'keep-all' }}>30分鐘後，帶著清爽的狀態回去工作</p>
           </Up>
           <div style={{ width:28, height:1, background:C.gold, opacity:.4, margin:'26px 0' }}/>
           <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
@@ -813,10 +874,10 @@ export default function App() {
           <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '5fr 6fr', gap: isMobile ? 28 : 52, alignItems:'start' }}>
             <Up><ImgSlot src={IM.m05} alt="老吾" dark label="圖片 3" hint="public/images/3.jpg" style={{ width:'100%', minHeight: isMobile ? 200 : 320, borderRadius:2 }}/></Up>
             <div>
-              <Up delay={0.1}><div style={{ fontFamily:C.cn, fontSize:19, color:C.gold, marginBottom:13, letterSpacing:'0.06em', fontWeight:400 }}>麻瓜療癒師—老吾</div></Up>
-              <Up delay={0.18}><h2 style={{ fontFamily:C.cn, fontSize: isMobile ? 20 : 'clamp(17px,2.5vw,24px)', color:C.lt, fontWeight:300, lineHeight:1.45, letterSpacing:'0.05em', marginBottom:20, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>是透過練習而成的療癒者</h2></Up>
+              <Up delay={0.1}><div style={{ fontFamily:C.cn, fontSize:'clamp(1rem, 2.4vw, 1.2rem)', color:C.gold, marginBottom:13, letterSpacing:'0.06em', fontWeight:400 }}>麻瓜療癒師—老吾</div></Up>
+              <Up delay={0.18}><h2 style={{ fontFamily:C.cn, fontSize:'clamp(1.5rem, 4vw, 2.2rem)', color:C.lt, fontWeight:300, lineHeight:1.45, letterSpacing:'0.05em', marginBottom:20, whiteSpace: isMobile ? 'normal' : 'nowrap' }}>是透過練習而成的療癒者</h2></Up>
               <Up delay={0.25}>
-                <div style={{ fontFamily:C.cn, fontSize: isMobile ? 15 : 14, color:'rgba(247,243,236,0.67)', lineHeight:1.9, letterSpacing:'0.08em' }}>
+                <div style={{ fontFamily:C.cn, fontSize:'clamp(0.9rem, 2vw, 1.05rem)', color:'rgba(247,243,236,0.67)', lineHeight:1.9, letterSpacing:'0.08em' }}>
                   {['大部分的人都跟我一樣','平凡、麻瓜，但很需要一個方式','可以讓自己在混亂中慢慢穩下來','','原來療癒不是天賦，是練習','不是敏感，是存在','不是會看到什麼，而是願意陪著別人'].map((l,i)=><p key={i} style={{marginBottom:l?7:14}}>{l}</p>)}
                 </div>
               </Up>
@@ -854,8 +915,8 @@ export default function App() {
                   }}>
                   <div style={{marginBottom:13}}><f.I/></div>
                   <div style={{fontFamily:C.ui,fontSize:8,letterSpacing:'0.16em',color:C.goldD,marginBottom:9}}>{f.num}</div>
-                  <div style={{fontFamily:C.cn,fontSize:17,color:C.ink,lineHeight:1.4,letterSpacing:'0.06em',marginBottom:11,wordBreak:'keep-all'}}>{f.title}</div>
-                  <div style={{fontFamily:C.ui,fontSize: isMobile ? 13 : 12,color:deepInk(0.5),lineHeight:1.95,letterSpacing:'0.05em'}}>{f.desc.split('\n').map((l,j)=><div key={j}>{l}</div>)}</div>
+                  <div style={{fontFamily:C.cn,fontSize:'clamp(1rem, 2.5vw, 1.15rem)',color:C.ink,lineHeight:1.4,letterSpacing:'0.06em',marginBottom:11,wordBreak:'keep-all'}}>{f.title}</div>
+                  <div style={{fontFamily:C.ui,fontSize:'clamp(0.9rem, 2vw, 1.05rem)',color:deepInk(0.5),lineHeight:1.95,letterSpacing:'0.05em'}}>{f.desc.split('\n').map((l,j)=><div key={j}>{l}</div>)}</div>
                 </div>
               </Up>
             ))}
@@ -932,7 +993,7 @@ export default function App() {
 
                     <div style={{
                       fontFamily: "'Noto Serif TC', Georgia, serif",
-                      fontSize: isMobile ? 16 : 17,
+                      fontSize: 'clamp(1rem, 2.5vw, 1.15rem)',
                       color: '#1A1714',
                       letterSpacing: '0.06em',
                       marginBottom: 14,
@@ -942,7 +1003,7 @@ export default function App() {
 
                     <div style={{
                       fontFamily: 'system-ui, -apple-system, sans-serif',
-                      fontSize: isMobile ? 13 : 12,
+                      fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
                       color: 'rgba(26,23,20,0.5)',
                       lineHeight: 2,
                       letterSpacing: '0.06em',
@@ -961,7 +1022,7 @@ export default function App() {
       <div style={glass('rgba(237,229,212,0.84)', 'rgba(176,122,18,0.15)')}>
         <div style={S()}>
           <Up><Label price>服務費用</Label></Up>
-          <div className="wulit-m08-grid" style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:24, maxWidth:860, alignItems:'stretch' }}>
+          <div className="wulit-m08-grid" style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:24, maxWidth:780, margin:'0 auto', alignItems:'stretch' }}>
             {[{
               name:'香療 | SCENTS 靈氣充電（30 分鐘）',
               price:'800',
@@ -1011,7 +1072,7 @@ export default function App() {
                       <div style={{fontFamily:C.ui,fontSize:'calc(10px + 2pt)',letterSpacing:'0.13em',color:priceDeep(0.33),marginTop:5,fontWeight:600}}>{pc.unit}</div>
                     </div>
                   )}
-                  <p style={{ fontFamily:C.ui, fontSize:12, color:deepInk(0.5), lineHeight:1.9, letterSpacing:'0.05em', marginTop:16, marginBottom:0 }}>
+                  <p style={{ fontFamily:C.ui, fontSize:'clamp(0.9rem, 2vw, 1.05rem)', color:deepInk(0.5), lineHeight:1.9, letterSpacing:'0.05em', marginTop:16, marginBottom:0 }}>
                     {pc.desc}
                   </p>
                   <div style={{ flex: 1, minHeight: 8 }} />
@@ -1023,6 +1084,7 @@ export default function App() {
                     style={{
                       display: 'block',
                       marginTop: 20,
+                      minHeight: 48,
                       padding: '11px 0',
                       border: '0.5px solid #C9920A',
                       color: '#C9920A',
@@ -1057,7 +1119,7 @@ export default function App() {
       <div style={glass('rgba(247,243,236,0.74)', 'rgba(247,243,236,0.6)')}>
         <div style={S()}>
           <Up><Label>常見問題</Label></Up>
-          <div style={{maxWidth:610}}>
+          <div style={{width:'100%', maxWidth:780, margin:'0 auto'}}>
             {QA.map((item,i)=>(
               <Up key={i} delay={0.05*i}>
                 <div data-h onMouseEnter={()=>setHQa(i)} onMouseLeave={()=>setHQa(null)}
@@ -1071,8 +1133,8 @@ export default function App() {
                     ...cardGlassBase,
                     background: 'rgba(247,243,236,0.52)',
                   }}>
-                  <div style={{fontFamily:C.cn,fontSize:15,color:hQa===i?C.goldD:C.gold,marginBottom:7,letterSpacing:'0.06em',lineHeight:1.6,transition:'color .25s',wordBreak:'keep-all'}}>{item.q}</div>
-                  <div style={{fontFamily:C.ui,fontSize:13,color:deepInk(0.5),lineHeight:1.9,letterSpacing:'0.06em'}}>{item.a}</div>
+                  <div style={{fontFamily:C.cn,fontSize:isMobile ? '0.95rem' : 'clamp(0.95rem, 2.2vw, 1.1rem)',color:hQa===i?C.goldD:C.gold,marginBottom:7,letterSpacing:'0.06em',lineHeight:1.6,transition:'color .25s',wordBreak:'keep-all'}}>{item.q}</div>
+                  <div style={{fontFamily:C.ui,fontSize:'clamp(0.9rem, 2vw, 1.05rem)',color:deepInk(0.5),lineHeight:1.9,letterSpacing:'0.06em'}}>{item.a}</div>
                 </div>
               </Up>
             ))}
@@ -1081,7 +1143,7 @@ export default function App() {
       </div>
 
       {/* ══ M10 CTA ══ */}
-      <div style={{...glass('rgba(26,20,12,0.4)','rgba(212,168,48,0.1)',BL_HERO),padding: isMobile ? '80px 24px 72px' : '108px 56px 88px',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',position:'relative',overflow:'hidden'}}>
+      <div style={{...glass('rgba(26,20,12,0.4)','rgba(212,168,48,0.1)',BL_HERO),paddingTop: isMobile ? 60 : 100,paddingBottom: isMobile ? 60 : 100,paddingLeft: isMobile ? 20 : (isTablet ? 32 : 64),paddingRight: isMobile ? 20 : (isTablet ? 32 : 64),textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',position:'relative',overflow:'hidden'}}>
         <div style={{ position:'absolute', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden' }}>
           <div className="wulit-halo-cta-a" />
           <div className="wulit-halo-cta-b" />
@@ -1090,7 +1152,7 @@ export default function App() {
         <Up delay={0.2}>
           <a data-h href="https://line.me/R/ti/p/@103xydjx" target="_blank" rel="noreferrer"
             onMouseEnter={()=>setHBtn(true)} onMouseLeave={()=>setHBtn(false)}
-            style={{ ...pillBtn(hBtn), padding: isMobile ? '14px 40px' : '15px 52px', fontSize: 11, marginBottom:13, position:'relative', zIndex:2 }}>
+            style={{ ...pillBtn(hBtn), padding: isMobile ? '14px 40px' : '15px 52px', fontSize: 11, minHeight: 48, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 280 : 'none', marginBottom:13, position:'relative', zIndex:2 }}>
             預約充電
           </a>
         </Up>
