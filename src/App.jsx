@@ -632,7 +632,11 @@ export default function App() {
       </div>
 
       {/* ══ M03 靈氣是什麼 ══ */}
-      <div style={glass('rgba(237,229,212,0.84)', 'rgba(176,122,18,0.15)')}>
+      <div style={{
+        background: 'linear-gradient(135deg, #EDE5D4 0%, #C8D5DF 50%, #E8EDF1 100%)',
+        borderTop: '1px solid rgba(83, 96, 112, 0.15)',
+        borderBottom: '1px solid rgba(83, 96, 112, 0.15)',
+      }}>
         <div style={{
           position: 'relative',
           width: '100%',
@@ -754,7 +758,7 @@ export default function App() {
                   <col style={{ width: 130 }}/>
                 </colgroup>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(247,243,236,0.15)' }}>
+                  <tr style={{ borderBottom: '0.5px solid rgba(83, 96, 112, 0.12)' }}>
                     <th style={{ padding: '10px 12px' }}/>
                     {['靈氣充電', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
                       <th
@@ -765,8 +769,8 @@ export default function App() {
                           fontSize: 9,
                           letterSpacing: '0.15em',
                           textTransform: 'uppercase',
-                          color: i === 0 ? '#D4A830' : 'rgba(247,243,236,0.35)',
-                          borderBottom: i === 0 ? '2px solid #C9920A' : 'none',
+                          color: i === 0 ? '#536070' : 'rgba(83, 96, 112, 0.35)',
+                          borderBottom: i === 0 ? '2px solid #536070' : 'none',
                           marginBottom: i === 0 ? -1 : 0,
                           textAlign: 'left',
                           fontWeight: 400,
@@ -779,28 +783,36 @@ export default function App() {
                 </thead>
                 <tbody>
                   {M03_CMP_ROWS.map((row, ri) => (
-                    <tr key={ri} style={{ borderBottom: '1px solid rgba(247,243,236,0.08)' }}>
+                    <tr key={ri} style={{ borderBottom: '0.5px solid rgba(83, 96, 112, 0.12)' }}>
                       <td style={{
                         padding: '12px',
                         fontFamily: C.ui,
                         fontSize: 10,
                         letterSpacing: '0.08em',
-                        color: 'rgba(247,243,236,0.4)',
+                        color: '#3A4A57',
+                        opacity: 0.85,
                         verticalAlign: 'middle',
                       }}>{row.a}</td>
                       {row.v.map((v, vi) => (
+                        (() => {
+                          const isTickOrCross = /[✓✔✗✕✖×]/.test(v)
+                          return (
                         <td key={vi} style={{
                           padding: '12px',
                           fontSize: 12,
                           letterSpacing: '0.05em',
                           lineHeight: 1.5,
-                          color: row.hi[vi] ? '#F7F3EC' : 'rgba(247,243,236,0.35)',
-                          background: row.hi[vi] ? 'rgba(201,146,10,0.12)' : 'transparent',
-                          borderLeft: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
-                          borderRight: row.hi[vi] ? '1px solid rgba(201,146,10,0.25)' : 'none',
+                          color: isTickOrCross
+                            ? (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.3)')
+                            : (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.35)'),
+                          background: row.hi[vi] ? 'rgba(232, 237, 241, 0.6)' : 'transparent',
+                          borderLeft: row.hi[vi] ? '2px solid rgba(83,96,112,0.3)' : 'none',
+                          borderRight: 'none',
                           fontWeight: row.hi[vi] ? 400 : 300,
                           verticalAlign: 'middle',
                         }}>{v}</td>
+                          )
+                        })()
                       ))}
                     </tr>
                   ))}
