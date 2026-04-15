@@ -633,9 +633,11 @@ export default function App() {
 
       {/* ══ M03 靈氣是什麼 ══ */}
       <div style={{
-        background: 'linear-gradient(135deg, #EDE5D4 0%, #C8D5DF 50%, #E8EDF1 100%)',
-        borderTop: '1px solid rgba(83, 96, 112, 0.15)',
-        borderBottom: '1px solid rgba(83, 96, 112, 0.15)',
+        background: 'linear-gradient(135deg, #EDE5D4 0%, #C8D5DF 55%, #E8EDF1 100%)',
+        backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
+        borderTop: '1px solid rgba(83, 96, 112, 0.18)',
+        borderBottom: '1px solid rgba(83, 96, 112, 0.18)',
       }}>
         <div style={{
           position: 'relative',
@@ -644,25 +646,8 @@ export default function App() {
           minHeight: isMobile ? 600 : 720,
           height: isMobile ? undefined : 720,
         }}>
-          <img
-            src="/images/8.png"
-            alt=""
-            style={{
-              width: '100%',
-              height: isMobile ? 'auto' : '100%',
-              minHeight: isMobile ? 600 : 720,
-              objectFit: 'cover',
-              objectPosition: 'center',
-              display: 'block',
-            }}
-          />
           <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(26,20,12,0.55) 0%, rgba(26,20,12,0.78) 100%)',
-          }}/>
-          <div style={{
-            position: 'absolute',
+            position: 'relative',
             inset: 0,
             display: 'flex',
             flexDirection: 'column',
@@ -679,7 +664,7 @@ export default function App() {
               fontSize: 9,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(212,168,48,0.65)',
+              color: '#536070',
               display: 'flex',
               alignItems: 'center',
               gap: 12,
@@ -693,7 +678,7 @@ export default function App() {
               fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
               lineHeight: 1.8,
               letterSpacing: '0.06em',
-              color: '#F7F3EC',
+              color: '#1A1714',
               marginBottom: 8,
               wordBreak: 'keep-all',
             }}>
@@ -706,7 +691,7 @@ export default function App() {
               fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
               lineHeight: 1.8,
               letterSpacing: '0.06em',
-              color: '#F7F3EC',
+              color: '#1A1714',
               marginBottom: 16,
               wordBreak: 'keep-all',
             }}>
@@ -717,7 +702,7 @@ export default function App() {
               fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
               lineHeight: 1.8,
               letterSpacing: '0.06em',
-              color: '#F7F3EC',
+              color: '#1A1714',
               marginBottom: 16,
               wordBreak: 'keep-all',
             }}>
@@ -726,7 +711,7 @@ export default function App() {
             <p style={{
               fontFamily: C.ui,
               fontSize: isMobile ? 11 : 12,
-              color: 'rgba(247,243,236,0.55)',
+              color: 'rgba(26, 23, 20, 0.55)',
               lineHeight: 2,
               letterSpacing: '0.07em',
               marginBottom: 40,
@@ -769,7 +754,7 @@ export default function App() {
                           fontSize: 9,
                           letterSpacing: '0.15em',
                           textTransform: 'uppercase',
-                          color: i === 0 ? '#536070' : 'rgba(83, 96, 112, 0.35)',
+                          color: i === 0 ? '#536070' : 'rgba(83, 96, 112, 0.45)',
                           borderBottom: i === 0 ? '2px solid #536070' : 'none',
                           marginBottom: i === 0 ? -1 : 0,
                           textAlign: 'left',
@@ -791,6 +776,7 @@ export default function App() {
                         letterSpacing: '0.08em',
                         color: '#3A4A57',
                         opacity: 0.85,
+                        fontWeight: 400,
                         verticalAlign: 'middle',
                       }}>{row.a}</td>
                       {row.v.map((v, vi) => (
@@ -804,10 +790,10 @@ export default function App() {
                           lineHeight: 1.5,
                           color: isTickOrCross
                             ? (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.3)')
-                            : (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.35)'),
-                          background: row.hi[vi] ? 'rgba(232, 237, 241, 0.6)' : 'transparent',
-                          borderLeft: row.hi[vi] ? '2px solid rgba(83,96,112,0.3)' : 'none',
-                          borderRight: 'none',
+                            : (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.4)'),
+                          background: row.hi[vi] ? 'rgba(232, 237, 241, 0.7)' : 'transparent',
+                          borderLeft: row.hi[vi] ? '1.5px solid rgba(83, 96, 112, 0.25)' : 'none',
+                          borderRight: row.hi[vi] ? '1.5px solid rgba(83, 96, 112, 0.25)' : 'none',
                           fontWeight: row.hi[vi] ? 400 : 300,
                           verticalAlign: 'middle',
                         }}>{v}</td>
