@@ -135,7 +135,8 @@ const goldImgOverlay = (dark) =>
     ? 'linear-gradient(145deg, rgba(212,168,48,0.16) 0%, rgba(201,146,10,0.12) 45%, rgba(176,122,18,0.1) 100%)'
     : 'linear-gradient(145deg, rgba(176,122,18,0.14) 0%, rgba(201,146,10,0.18) 42%, rgba(212,168,48,0.12) 100%)'
 
-/** public/images 編號：2 服務本質、3 老吾（.jpg）、4 工作室、5–7 體驗流程；首頁 Hero 為 /videos/1.mp4 */
+/** public/images 編號：2 服務本質、3 老吾（.jpg）、4 工作室、5–7 體驗流程；首頁 Hero 影片換檔時請提高 v 以略過快取 */
+const HERO_VIDEO = '/videos/1.mp4?v=2'
 const IM = {
   m04: '/images/2.png',
   m05: '/images/3.jpg',
@@ -303,6 +304,17 @@ const M03_CMP_ROWS = [
   { a: '午休30分可完成',  v: ['可以', '困難', '可以，需自律', '困難'],                   hi: [1, 0, 0, 0] },
   { a: '效果方向',        v: ['能量整理・靜定恢復', '肌肉放鬆', '思緒沉澱', '體能釋放'], hi: [1, 0, 0, 0] },
 ]
+/** M03 比較表：字級 ×1.2、全表同一字體；clamp 兼顧手機／平板／桌機可讀性 */
+const m03TableFont = {
+  th: { fontFamily: C.cn, fontSize: 'clamp(calc(9px * 1.2), calc(1.1vw + 8px), calc(11px * 1.2))', letterSpacing: '0.14em' },
+  rowLabel: { fontFamily: C.cn, fontSize: 'clamp(calc(10px * 1.2), calc(1vw + 9px), calc(12px * 1.2))', letterSpacing: '0.08em' },
+  cell: { fontFamily: C.cn, fontSize: 'clamp(calc(11px * 1.2), calc(1.15vw + 9px), calc(14px * 1.2))', letterSpacing: '0.05em', lineHeight: 1.55 },
+}
+const FEEDBACK_CARDS = [
+  { quote: '「30 分鐘後腦中的雜音安靜很多，下午開會沒那麼焦躁。」', role: '軟體業／行銷企劃', note: '（範例文案，可替換）' },
+  { quote: '「第一次體驗靈氣，全程不用說話很放鬆，身體像充飽電。」', role: '金融業／產品經理', note: '（範例文案，可替換）' },
+  { quote: '「中午走進來，穿著外套躺下就好；結束回公司像換了一個人。」', role: '新創／營運', note: '（範例文案，可替換）' },
+]
 const PAIN_CARDS = [
   { num: '01', title: '腦袋當機', img: '/images/10.png', lines: ['明明人在位子上', '腦袋卻像卡住的硬碟', '轉不動，也不知道從哪裡開始'] },
   { num: '02', title: '身體很重', img: '/images/11.png', lines: ['開完冗長的會議', '覺得身體重得像背了一座山', '睡一覺醒來，還是很累'] },
@@ -318,6 +330,7 @@ export default function App() {
   const [hStep, setHStep] = useState(null)
   const [hPc,   setHPc]   = useState(null)
   const [hQa,   setHQa]   = useState(null)
+  const [hFb,   setHFb]   = useState(null)
   const [hBtn,  setHBtn]  = useState(false)
   const [hHeroBtn, setHHeroBtn] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -435,7 +448,7 @@ export default function App() {
             zIndex: 2,
           }}
         >
-          <source src="/videos/1.mp4" type="video/mp4" />
+          <source src={HERO_VIDEO} type="video/mp4" />
         </video>
         <div
           aria-hidden
@@ -730,29 +743,27 @@ export default function App() {
               <table
                 style={{
                   width: '100%',
-                  minWidth: 680,
+                  minWidth: 'calc(680px * 1.2)',
                   borderCollapse: 'collapse',
                   tableLayout: 'fixed',
                 }}
               >
                 <colgroup>
-                  <col style={{ width: 110 }}/>
-                  <col style={{ width: 170 }}/>
-                  <col style={{ width: 130 }}/>
-                  <col style={{ width: 120 }}/>
-                  <col style={{ width: 130 }}/>
+                  <col style={{ width: 'calc(110px * 1.2)' }}/>
+                  <col style={{ width: 'calc(170px * 1.2)' }}/>
+                  <col style={{ width: 'calc(130px * 1.2)' }}/>
+                  <col style={{ width: 'calc(120px * 1.2)' }}/>
+                  <col style={{ width: 'calc(130px * 1.2)' }}/>
                 </colgroup>
                 <thead>
                   <tr style={{ borderBottom: '0.5px solid rgba(83, 96, 112, 0.12)' }}>
-                    <th style={{ padding: '10px 12px' }}/>
-                    {['靈氣充電', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
+                    <th style={{ padding: 'calc(10px * 1.2) calc(12px * 1.2)' }}/>
+                    {['靈氣快充', '芳療按摩', '冥想', '瑜伽健身'].map((h, i) => (
                       <th
                         key={h}
                         style={{
-                          padding: '10px 12px',
-                          fontFamily: C.ui,
-                          fontSize: 9,
-                          letterSpacing: '0.15em',
+                          padding: 'calc(10px * 1.2) calc(12px * 1.2)',
+                          ...m03TableFont.th,
                           textTransform: 'uppercase',
                           color: i === 0 ? '#536070' : 'rgba(83, 96, 112, 0.45)',
                           borderBottom: i === 0 ? '2px solid #536070' : 'none',
@@ -770,10 +781,8 @@ export default function App() {
                   {M03_CMP_ROWS.map((row, ri) => (
                     <tr key={ri} style={{ borderBottom: '0.5px solid rgba(83, 96, 112, 0.12)' }}>
                       <td style={{
-                        padding: '12px',
-                        fontFamily: C.ui,
-                        fontSize: 10,
-                        letterSpacing: '0.08em',
+                        padding: 'calc(12px * 1.2)',
+                        ...m03TableFont.rowLabel,
                         color: '#3A4A57',
                         opacity: 0.85,
                         fontWeight: 400,
@@ -784,10 +793,8 @@ export default function App() {
                           const isTickOrCross = /[✓✔✗✕✖×]/.test(v)
                           return (
                         <td key={vi} style={{
-                          padding: '12px',
-                          fontSize: 12,
-                          letterSpacing: '0.05em',
-                          lineHeight: 1.5,
+                          padding: 'calc(12px * 1.2)',
+                          ...m03TableFont.cell,
                           color: isTickOrCross
                             ? (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.3)')
                             : (row.hi[vi] ? '#536070' : 'rgba(83, 96, 112, 0.4)'),
@@ -808,7 +815,7 @@ export default function App() {
             {isMobile && (
               <p style={{
                 fontFamily: C.ui,
-                fontSize: 10,
+                fontSize: 'calc(10px * 1.2)',
                 letterSpacing: '0.12em',
                 color: 'rgba(201,146,10,0.45)',
                 textAlign: 'center',
@@ -1021,16 +1028,16 @@ export default function App() {
           <Up><Label price>服務費用</Label></Up>
           <div className="wulit-m08-grid" style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap:24, maxWidth:780, margin:'0 auto', alignItems:'stretch' }}>
             {[{
-              name:'香療 | SCENTS 靈氣充電（30 分鐘）',
+              name:'靈氣快充',
               price:'800',
-              unit:'NT$ · 30 分鐘',
+              unit:'30 分鐘',
               promo:true,
               promoPrice:'720',
               desc:'結合靈氣能量與嗅覺調頻，透過香氣頻率快速釋放緊繃，回到當下的平靜與清明。適合午休充電、情緒疏通。',
             },{
               name:'深度靈氣療癒（90 分鐘）',
               price:'2,000',
-              unit:'NT$ · 90 分鐘',
+              unit:'90 分鐘',
               promo:false,
               desc:'完整的身心靈療癒流程，透過靈氣能量疏通氣脈阻塞，深層釋放情緒與身體的累積壓力，帶來整合與更新。',
             }].map((pc,i)=>(
@@ -1055,18 +1062,43 @@ export default function App() {
                       <span style={{ textDecoration: 'line-through', color: '#9A8F85', fontSize: '1rem', fontFamily: C.ui }}>
                         NT$ {pc.price}
                       </span>
-                      <div style={{ fontSize: isMobile ? 40 : 44, fontWeight: 300, color: '#1a1a1a', fontFamily: C.en, lineHeight: 1.05 }}>
-                        {pc.promoPrice}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        flexWrap: 'wrap',
+                        gap: '0.2em',
+                        fontSize: isMobile ? 40 : 44,
+                        fontWeight: 300,
+                        color: C.ink,
+                        fontFamily: C.en,
+                        lineHeight: 1.05,
+                        marginTop: 4,
+                      }}>
+                        <span style={{ fontFamily: C.ui, fontSize: isMobile ? 20 : 22, fontWeight: 400, color: C.ink }}>NT$</span>
+                        <span>{pc.promoPrice}</span>
                       </div>
-                      <p style={{ color: '#9A8F85', fontSize: '0.875rem', fontFamily: C.ui, marginTop: 4 }}>{pc.unit}</p>
+                      <p style={{ color: '#9A8F85', fontSize: '0.875rem', fontFamily: C.ui, fontWeight: 400, marginTop: 4 }}>{pc.unit}</p>
                       <div style={{marginTop:14,padding:'10px 12px',background:'rgba(201,146,10,.1)',border:`0.5px solid rgba(201,146,10,.2)`,borderRadius:2,backdropFilter:BL_CARD,WebkitBackdropFilter:BL_CARD,boxShadow:'inset 0 1px 0 rgba(255,255,255,0.25)'}}>
                         <span style={{fontFamily:C.ui,fontSize:'0.78rem',letterSpacing:'0.12em',color:priceGoldDeep,display:'block'}}>推廣期限定 · 12:00－14:00</span>
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <div style={{fontFamily:C.en,fontSize: isMobile ? 40 : 44,fontWeight:600,color:inkTable,lineHeight:1}}>{pc.price}</div>
-                      <div style={{fontFamily:C.ui,fontSize:'calc(10px + 2pt)',letterSpacing:'0.13em',color:priceDeep(0.33),marginTop:5,fontWeight:600}}>{pc.unit}</div>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        flexWrap: 'wrap',
+                        gap: '0.2em',
+                        fontFamily: C.en,
+                        fontSize: isMobile ? 40 : 44,
+                        fontWeight: 300,
+                        color: inkTable,
+                        lineHeight: 1,
+                      }}>
+                        <span style={{ fontFamily: C.ui, fontSize: isMobile ? 20 : 22, fontWeight: 400, color: inkTable }}>NT$</span>
+                        <span>{pc.price}</span>
+                      </div>
+                      <div style={{ fontFamily: C.ui, fontSize: 'calc(10px + 2pt)', letterSpacing: '0.13em', color: priceDeep(0.33), marginTop: 5, fontWeight: 400 }}>{pc.unit}</div>
                     </div>
                   )}
                   <p style={{ fontFamily:C.ui, fontSize:'clamp(0.9rem, 2vw, 1.05rem)', color:deepInk(0.5), lineHeight:1.9, letterSpacing:'0.05em', marginTop:16, marginBottom:0 }}>
@@ -1079,14 +1111,19 @@ export default function App() {
                     target="_blank"
                     rel="noreferrer"
                     style={{
-                      display: 'block',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      boxSizing: 'border-box',
                       marginTop: 20,
                       minHeight: 48,
-                      padding: '11px 0',
+                      padding: '11px 12px',
                       border: '0.5px solid #C9920A',
                       color: '#C9920A',
                       fontFamily: 'system-ui, -apple-system, sans-serif',
                       fontSize: 11,
+                      fontWeight: 400,
                       letterSpacing: '0.2em',
                       textTransform: 'uppercase',
                       textDecoration: 'none',
@@ -1105,6 +1142,72 @@ export default function App() {
                   >
                     LINE 預約
                   </a>
+                </div>
+              </Up>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══ M08b 用戶回饋 ══ */}
+      <div style={glass('rgba(247,243,236,0.74)', 'rgba(247,243,236,0.6)')}>
+        <div style={S()}>
+          <Up><Label>用戶回饋</Label></Up>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : (isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'),
+            gap: isMobile ? 14 : 18,
+            alignItems: 'stretch',
+          }}>
+            {FEEDBACK_CARDS.map((fb, i) => (
+              <Up key={i} delay={0.08 * i}>
+                <div
+                  data-h
+                  onMouseEnter={() => setHFb(i)}
+                  onMouseLeave={() => setHFb(null)}
+                  style={{
+                    ...(isTablet && i === 2 ? { gridColumn: '1 / -1', maxWidth: 520, width: '100%', justifySelf: 'center' } : {}),
+                    ...cardGlassBase,
+                    padding: isMobile ? '22px 20px' : '26px 22px',
+                    borderRadius: 2,
+                    background: hFb === i ? 'rgba(247,243,236,.72)' : 'rgba(247,243,236,.48)',
+                    border: `0.5px solid ${hFb === i ? 'rgba(176,122,18,.45)' : 'rgba(176,122,18,.18)'}`,
+                    transition: 'all .28s ease',
+                    transform: hFb === i ? 'translateY(-2px)' : 'none',
+                    cursor: 'default',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <p style={{
+                    fontFamily: C.cn,
+                    fontSize: 'clamp(0.95rem, 2.1vw, 1.08rem)',
+                    color: C.ink,
+                    lineHeight: 1.85,
+                    letterSpacing: '0.06em',
+                    flex: 1,
+                    wordBreak: 'keep-all',
+                  }}>{fb.quote}</p>
+                  <div style={{
+                    marginTop: 18,
+                    paddingTop: 16,
+                    borderTop: '1px solid rgba(176,122,18,0.12)',
+                  }}>
+                    <div style={{
+                      fontFamily: C.ui,
+                      fontSize: 'clamp(0.78rem, 1.6vw, 0.88rem)',
+                      color: deepInk(0.45),
+                      letterSpacing: '0.08em',
+                    }}>{fb.role}</div>
+                    <div style={{
+                      fontFamily: C.ui,
+                      fontSize: 11,
+                      color: 'rgba(201,146,10,0.42)',
+                      letterSpacing: '0.1em',
+                      marginTop: 6,
+                    }}>{fb.note}</div>
+                  </div>
                 </div>
               </Up>
             ))}

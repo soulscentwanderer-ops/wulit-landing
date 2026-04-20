@@ -1,7 +1,7 @@
 {
   "name": "wulit-landing",
   "version": "1.0.0",
-  "description": "吾光療域 Wul.it — 午休靈氣充電 Landing Page",
+  "description": "吾光療域 Wul.it — 午休靈氣快充 Landing Page",
   "type": "module",
   "scripts": {
     "dev": "vite",
