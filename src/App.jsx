@@ -83,6 +83,35 @@ function Up({ children, delay = 0, y = 20, style = {} }) {
   )
 }
 
+/** 可逆進場：往上滑離開可回到收合狀態 */
+function FoldUp({ children, delay = 0, y = 36, style = {} }) {
+  const ref = useRef(null)
+  const [vis, setVis] = useState(false)
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => setVis(e.isIntersecting),
+      { threshold: 0.18 }
+    )
+    const el = ref.current
+    if (el) obs.observe(el)
+    return () => { if (el) obs.unobserve(el) }
+  }, [])
+  return (
+    <div ref={ref} style={{
+      opacity: vis ? 1 : 0.15,
+      transform: vis ? 'translateY(0) scale(1)' : `translateY(${y}px) scale(0.92)`,
+      transformOrigin: 'top center',
+      transition: `opacity 0.55s cubic-bezier(0.4,0,0.2,1) ${delay}s,
+                   transform 0.65s cubic-bezier(0.4,0,0.2,1) ${delay}s`,
+      filter: vis ? 'none' : 'blur(1.5px)',
+      willChange: 'transform, opacity',
+      ...style,
+    }}>
+      {children}
+    </div>
+  )
+}
+
 /* ═══════════════════════════════════════
    SCROLL PROGRESS BAR
 ═══════════════════════════════════════ */
@@ -292,10 +321,24 @@ const STEPS = [
 ]
 const QA = [
   { q: '沒接觸過靈氣，可以體驗嗎？',  a: '完全可以。不需要任何靈性背景，帶著自己來就好。' },
-  { q: '療程會觸碰我嗎？',            a: '不會。靈氣是非接觸式療法，雙手懸在距你幾公分的地方，全程穿著衣服平躺休息。' },
+  { q: '療程會觸碰我嗎？',            a: '不會。「吾光三十分鐘充電靈氣」是非接觸式的，雙手懸在距你幾公分的地方，全程穿著衣服平躺休息。' },
   { q: '30 分鐘夠嗎？',               a: '對午休快充來說足夠。很多人結束後說——身體變輕了，下午比較能專注。' },
   { q: '工作室在哪裡？',              a: '科技大樓捷運站步行可達。預約確認後，會私訊告知詳細地址。' },
   { q: '當天想取消怎麼辦？',          a: '提前 2 小時告知即可，非常彈性。' },
+]
+const REAL_TESTIMONIALS = [
+  {
+    quote: '「後來真的睡著了，起床的時候左邊不舒服的感覺減少非常多。」',
+    label: 'Irene／外商物流主管',
+  },
+  {
+    quote: '「我的頂輪一開始很脹痛。施作時，我看到一隻獨角獸停在頭頂。到中間，他頭頂出現一朵粉紅蓮花，最後變成透明的水晶。頭頂的脹痛感就縮小了。」',
+    label: 'Jade／瑜伽老師',
+  },
+  {
+    quote: '「剛躺下的時候其實還是有非常多的事情在頭腦裡轉，從來沒停過，只是後來慢慢少了！」',
+    label: '林小姐／芳療師',
+  },
 ]
 const M03_CMP_ROWS = [
   { a: '需要更衣',        v: ['完全不需要', '需要脫衣', '不需要', '需要換裝'],           hi: [1, 0, 0, 0] },
@@ -310,11 +353,6 @@ const m03TableFont = {
   rowLabel: { fontFamily: C.cn, fontSize: 'clamp(calc(10px * 1.2), calc(1vw + 9px), calc(12px * 1.2))', letterSpacing: '0.08em' },
   cell: { fontFamily: C.cn, fontSize: 'clamp(calc(11px * 1.2), calc(1.15vw + 9px), calc(14px * 1.2))', letterSpacing: '0.05em', lineHeight: 1.55 },
 }
-const FEEDBACK_CARDS = [
-  { quote: '「30 分鐘後腦中的雜音安靜很多，下午開會沒那麼焦躁。」', role: '軟體業／行銷企劃', note: '（範例文案，可替換）' },
-  { quote: '「第一次體驗靈氣，全程不用說話很放鬆，身體像充飽電。」', role: '金融業／產品經理', note: '（範例文案，可替換）' },
-  { quote: '「中午走進來，穿著外套躺下就好；結束回公司像換了一個人。」', role: '新創／營運', note: '（範例文案，可替換）' },
-]
 const PAIN_CARDS = [
   { num: '01', title: '腦袋當機', img: '/images/10.png', lines: ['明明人在位子上', '腦袋卻像卡住的硬碟', '轉不動，也不知道從哪裡開始'] },
   { num: '02', title: '身體很重', img: '/images/11.png', lines: ['開完冗長的會議', '覺得身體重得像背了一座山', '睡一覺醒來，還是很累'] },
@@ -330,7 +368,6 @@ export default function App() {
   const [hStep, setHStep] = useState(null)
   const [hPc,   setHPc]   = useState(null)
   const [hQa,   setHQa]   = useState(null)
-  const [hFb,   setHFb]   = useState(null)
   const [hBtn,  setHBtn]  = useState(false)
   const [hHeroBtn, setHHeroBtn] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -1149,72 +1186,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ══ M08b 用戶回饋 ══ */}
-      <div style={glass('rgba(247,243,236,0.74)', 'rgba(247,243,236,0.6)')}>
-        <div style={S()}>
-          <Up><Label>用戶回饋</Label></Up>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : (isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'),
-            gap: isMobile ? 14 : 18,
-            alignItems: 'stretch',
-          }}>
-            {FEEDBACK_CARDS.map((fb, i) => (
-              <Up key={i} delay={0.08 * i}>
-                <div
-                  data-h
-                  onMouseEnter={() => setHFb(i)}
-                  onMouseLeave={() => setHFb(null)}
-                  style={{
-                    ...(isTablet && i === 2 ? { gridColumn: '1 / -1', maxWidth: 520, width: '100%', justifySelf: 'center' } : {}),
-                    ...cardGlassBase,
-                    padding: isMobile ? '22px 20px' : '26px 22px',
-                    borderRadius: 2,
-                    background: hFb === i ? 'rgba(247,243,236,.72)' : 'rgba(247,243,236,.48)',
-                    border: `0.5px solid ${hFb === i ? 'rgba(176,122,18,.45)' : 'rgba(176,122,18,.18)'}`,
-                    transition: 'all .28s ease',
-                    transform: hFb === i ? 'translateY(-2px)' : 'none',
-                    cursor: 'default',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <p style={{
-                    fontFamily: C.cn,
-                    fontSize: 'clamp(0.95rem, 2.1vw, 1.08rem)',
-                    color: C.ink,
-                    lineHeight: 1.85,
-                    letterSpacing: '0.06em',
-                    flex: 1,
-                    wordBreak: 'keep-all',
-                  }}>{fb.quote}</p>
-                  <div style={{
-                    marginTop: 18,
-                    paddingTop: 16,
-                    borderTop: '1px solid rgba(176,122,18,0.12)',
-                  }}>
-                    <div style={{
-                      fontFamily: C.ui,
-                      fontSize: 'clamp(0.78rem, 1.6vw, 0.88rem)',
-                      color: deepInk(0.45),
-                      letterSpacing: '0.08em',
-                    }}>{fb.role}</div>
-                    <div style={{
-                      fontFamily: C.ui,
-                      fontSize: 11,
-                      color: 'rgba(201,146,10,0.42)',
-                      letterSpacing: '0.1em',
-                      marginTop: 6,
-                    }}>{fb.note}</div>
-                  </div>
-                </div>
-              </Up>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* ══ M09 QA ══ */}
       <div style={glass('rgba(247,243,236,0.74)', 'rgba(247,243,236,0.6)')}>
         <div style={S()}>
@@ -1237,6 +1208,90 @@ export default function App() {
                   <div style={{fontFamily:C.ui,fontSize:'clamp(0.9rem, 2vw, 1.05rem)',color:deepInk(0.5),lineHeight:1.9,letterSpacing:'0.06em'}}>{item.a}</div>
                 </div>
               </Up>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══ M09b 客戶真實回饋 ══ */}
+      <div style={{ background: '#F7F3EC', borderTop: '1px solid rgba(176,122,18,0.12)', borderBottom: '1px solid rgba(176,122,18,0.12)' }}>
+        <div style={S({ maxWidth: 1080 })}>
+          <Up>
+            <h2 style={{
+              fontFamily: C.cn,
+              fontSize: isMobile ? '1.4rem' : 'clamp(1.5rem, 3vw, 2rem)',
+              fontWeight: 400,
+              color: '#1A1714',
+              letterSpacing: '0.1em',
+              lineHeight: 1.8,
+              textAlign: 'center',
+              marginBottom: 10,
+            }}>
+              客戶真實回饋
+            </h2>
+          </Up>
+          <Up delay={0.08}>
+            <p style={{
+              fontFamily: C.cn,
+              fontSize: 'clamp(0.95rem, 2vw, 1.05rem)',
+              color: 'rgba(26,23,20,0.66)',
+              letterSpacing: '0.12em',
+              lineHeight: 1.9,
+              textAlign: 'center',
+              marginBottom: isMobile ? 28 : 36,
+            }}>
+              他們說的，比我說的更真實
+            </p>
+          </Up>
+          <div style={{
+            width: '100%',
+            maxWidth: 1080,
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : (isTablet ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))'),
+            gap: isMobile ? 14 : 18,
+            alignItems: 'stretch',
+          }}>
+            {REAL_TESTIMONIALS.map((item, i) => (
+              <FoldUp key={item.label} delay={0.06 * i} style={{ minWidth: 0 }}>
+                <article style={{
+                  background: '#F7F3EC',
+                  border: '1px solid rgba(176,122,18,0.16)',
+                  boxShadow: '0 2px 12px rgba(26,23,20,0.04)',
+                  borderRadius: 2,
+                  padding: isMobile ? '28px 24px' : '34px 36px',
+                  minHeight: isMobile ? 220 : 260,
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  <blockquote style={{
+                    margin: 0,
+                    fontFamily: C.cn,
+                    fontSize: 15,
+                    color: '#1A1714',
+                    lineHeight: 1.9,
+                    letterSpacing: '0.05em',
+                    fontWeight: 400,
+                    wordBreak: 'break-word',
+                    flex: 1,
+                  }}>
+                    {item.quote}
+                  </blockquote>
+                  <p style={{
+                    margin: '16px 0 0',
+                    fontFamily: C.cn,
+                    fontSize: 12,
+                    color: '#8B7355',
+                    letterSpacing: '0.1em',
+                    lineHeight: 1.8,
+                  }}>
+                    {item.label}
+                  </p>
+                </article>
+              </FoldUp>
             ))}
           </div>
         </div>
