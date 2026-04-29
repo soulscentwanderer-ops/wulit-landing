@@ -854,7 +854,8 @@ export default function App() {
                 fontFamily: C.ui,
                 fontSize: 'calc(10px * 1.2)',
                 letterSpacing: '0.12em',
-                color: 'rgba(201,146,10,0.45)',
+                color: 'rgba(127, 91, 7, 0.9)',
+                fontWeight: 700,
                 textAlign: 'center',
                 marginTop: 10,
               }}>
@@ -877,14 +878,13 @@ export default function App() {
               playsInline
               style={{
                 width: '100%',
-                height: isMobile ? 200 : 320,
-                objectFit: 'cover',
+                height: 'auto',
                 borderRadius: 2,
                 marginBottom: 48,
                 display: 'block',
               }}
             >
-              <source src="/videos/wulit-healing-session.mp4" type="video/mp4" />
+              <source src="/videos/wulit-healing-session (1).mp4" type="video/mp4" />
             </video>
           </Up>
           <Up delay={0.2}>
