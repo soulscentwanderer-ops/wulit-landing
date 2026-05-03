@@ -18,6 +18,20 @@ const C = {
   ui:    "system-ui, -apple-system, sans-serif",
 }
 
+/* ═══════════════════════════════════════
+   META PIXEL TRACKING
+═══════════════════════════════════════ */
+const getUtmSource = () => {
+  const p = new URLSearchParams(window.location.search)
+  return p.get('utm_content') || p.get('utm_campaign') || 'organic'
+}
+
+const track = (event, data = {}) => {
+  if (typeof window.fbq === 'function') {
+    window.fbq('trackCustom', event, { utm_source: getUtmSource(), ...data })
+  }
+}
+
 const BL = 'blur(24px)'
 const BL_HERO = 'blur(36px) saturate(1.08)'
 const BL_CARD = 'blur(22px) saturate(1.06)'
@@ -389,6 +403,11 @@ export default function App() {
     window.addEventListener('mousemove', fn)
     return () => window.removeEventListener('mousemove', fn)
   }, [])
+  useEffect(() => {
+    const t = setTimeout(() => track('ViewContent', { page: 'landing' }), 30000)
+    return () => clearTimeout(t)
+  }, [])
+
   const S = (extra = {}) => ({
     paddingTop: isMobile ? 60 : 100,
     paddingBottom: isMobile ? 60 : 100,
@@ -547,6 +566,7 @@ export default function App() {
             href="https://line.me/R/ti/p/@103xydjx"
             target="_blank"
             rel="noreferrer"
+            onClick={() => track('LineBookingClick', { source: 'hero_cta' })}
             onMouseEnter={() => setHHeroBtn(true)}
             onMouseLeave={() => setHHeroBtn(false)}
             style={{
@@ -1147,6 +1167,7 @@ export default function App() {
                     href="https://line.me/R/ti/p/@103xydjx"
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => track('LineBookingClick', { source: i === 0 ? 'price_30min' : 'price_90min' })}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -1306,6 +1327,7 @@ export default function App() {
         <Up><p style={{fontFamily:C.cn,fontSize: isMobile ? '6.5vw' : 'clamp(21px,3.6vw,33px)',color:'rgba(247,243,236,.76)',lineHeight:2.4,fontWeight:300,letterSpacing:'0.06em',marginBottom:48,position:'relative',zIndex:2,wordBreak:'keep-all'}}>如果你有一點心動<br/>不用想太多</p></Up>
         <Up delay={0.2}>
           <a data-h href="https://line.me/R/ti/p/@103xydjx" target="_blank" rel="noreferrer"
+            onClick={() => track('LineBookingClick', { source: 'final_cta' })}
             onMouseEnter={()=>setHBtn(true)} onMouseLeave={()=>setHBtn(false)}
             style={{ ...pillBtn(hBtn), padding: isMobile ? '14px 40px' : '15px 52px', fontSize: 11, minHeight: 48, width: isMobile ? '100%' : 'auto', maxWidth: isMobile ? 280 : 'none', marginBottom:13, position:'relative', zIndex:2 }}>
             預約充電
