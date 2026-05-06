@@ -572,7 +572,7 @@ export default function App() {
             style={{
               ...pillBtn(hHeroBtn),
               padding: isMobile ? '14px 40px' : '15px 52px',
-              fontSize: 11,
+              fontSize: 22,
               minHeight: 48,
               width: isMobile ? '100%' : 'auto',
               maxWidth: isMobile ? 280 : 'none',
@@ -1164,38 +1164,25 @@ export default function App() {
                   <div style={{ flex: 1, minHeight: 8 }} />
                   <a
                     data-h
-                    href="https://line.me/R/ti/p/@103xydjx"
+                    href="https://lin.ee/UoV6Tgi"
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => track('LineBookingClick', { source: i === 0 ? 'price_30min' : 'price_90min' })}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '100%',
+                      display: 'inline-block',
                       boxSizing: 'border-box',
+                      width: '100%',
                       marginTop: 20,
-                      minHeight: 48,
-                      padding: '11px 12px',
-                      border: '0.5px solid #C9920A',
-                      color: '#C9920A',
-                      fontFamily: 'system-ui, -apple-system, sans-serif',
-                      fontSize: 11,
-                      fontWeight: 400,
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
-                      textDecoration: 'none',
+                      padding: '14px 36px',
                       textAlign: 'center',
-                      borderRadius: 1,
-                      transition: 'all 0.25s ease',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.background = '#C9920A'
-                      e.currentTarget.style.color = '#F7F3EC'
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.color = '#C9920A'
+                      backgroundColor: 'transparent',
+                      border: '1px solid #C9920A',
+                      color: '#C9920A',
+                      fontFamily: "'Noto Serif TC', serif",
+                      fontSize: 15,
+                      letterSpacing: '0.2em',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease',
                     }}
                   >
                     LINE 預約
