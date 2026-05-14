@@ -50,7 +50,6 @@ const pillBtn = (hover) => ({
   padding: '8px 20px',
   borderRadius: 20,
   border: 'none',
-  cursor: 'pointer',
   background: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
   color: C.ink,
   textDecoration: 'none',
@@ -377,7 +376,6 @@ const PAIN_CARDS = [
    MAIN
 ═══════════════════════════════════════ */
 export default function App() {
-  const [hTag,  setHTag]  = useState(null)
   const [hFeat, setHFeat] = useState(null)
   const [hStep, setHStep] = useState(null)
   const [hPc,   setHPc]   = useState(null)
@@ -423,6 +421,9 @@ export default function App() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        a { cursor: default; }
+        button { cursor: default; }
+        a[href*="line.me"], a[href*="lin.ee"] { cursor: pointer; }
         html { scroll-behavior: smooth; }
         @keyframes haloDrift {
           0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
@@ -468,6 +469,27 @@ export default function App() {
           filter: blur(44px);
           animation: haloDriftSlow 22s ease-in-out infinite;
           pointer-events: none;
+        }
+        /* M04 四個標籤：鎖定外觀，hover／active／focus 與預設一致 */
+        button.wulit-m04-tag {
+          -webkit-appearance: none;
+          appearance: none;
+          transition: none;
+        }
+        button.wulit-m04-tag::-moz-focus-inner {
+          border: 0;
+        }
+        button.wulit-m04-tag:hover,
+        button.wulit-m04-tag:focus,
+        button.wulit-m04-tag:focus-visible,
+        button.wulit-m04-tag:active {
+          background: var(--wulit-m04-tag-bg) !important;
+          color: #1A1714 !important;
+          box-shadow: 0 1px 8px rgba(176,122,18,.12) !important;
+          transform: none !important;
+          filter: none !important;
+          opacity: 1 !important;
+          outline: none !important;
         }
       `}</style>
 
@@ -913,16 +935,20 @@ export default function App() {
           </Up>
           <div style={{ width:28, height:1, background:C.gold, opacity:.4, margin:'26px 0' }}/>
           <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
-            {TAGS.map((tag,i)=>(
-              <Up key={tag} delay={0.1+i*0.08}>
-                <button data-h onMouseEnter={()=>setHTag(i)} onMouseLeave={()=>setHTag(null)}
-                  style={{
-                    fontFamily:C.ui, fontSize:11, letterSpacing:'0.12em', padding:'8px 20px', borderRadius:20, border:'none', cursor:'pointer',
-                    background: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
-                    color:C.ink, transform:hTag===i?'translateY(-2px) scale(1.04)':'none', transition:'all .25s cubic-bezier(.4,0,.2,1)',
-                    boxShadow:hTag===i?`0 4px 16px rgba(201,146,10,.28)`:'0 1px 8px rgba(176,122,18,.12)',
-                  }}>{tag}</button>
-              </Up>
+            {TAGS.map((tag)=>(
+              <button
+                key={tag}
+                type="button"
+                className="wulit-m04-tag"
+                style={{
+                  ['--wulit-m04-tag-bg']: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
+                  fontFamily:C.ui, fontSize:11, letterSpacing:'0.12em', padding:'8px 20px', borderRadius:20, border:'none',
+                  background: `linear-gradient(135deg, ${C.goldD} 0%, ${C.lt} 50%, ${C.gold} 100%)`,
+                  color:C.ink,
+                  boxShadow:'0 1px 8px rgba(176,122,18,.12)',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >{tag}</button>
             ))}
           </div>
         </div>
@@ -972,7 +998,6 @@ export default function App() {
                     background: hFeat===i?'rgba(247,243,236,.78)':'rgba(247,243,236,.52)',
                     transition: 'all .3s ease',
                     transform: hFeat===i?'translateY(-3px)':'none',
-                    cursor: 'pointer',
                   }}>
                   <div style={{marginBottom:13}}><f.I/></div>
                   <div style={{fontFamily:C.ui,fontSize:8,letterSpacing:'0.16em',color:C.goldD,marginBottom:9}}>{f.num}</div>
@@ -1108,7 +1133,6 @@ export default function App() {
                     background: hPc===i?'rgba(247,243,236,.62)':'rgba(247,243,236,.42)',
                     transition: 'all .3s ease',
                     transform: hPc===i?'translateY(-3px)':'none',
-                    cursor: 'pointer',
                     minHeight: '100%',
                     display: 'flex',
                     flexDirection: 'column',
@@ -1208,7 +1232,6 @@ export default function App() {
                     padding: '20px 22px',
                     paddingLeft: hQa === i ? 26 : 22,
                     transition: 'padding .25s ease',
-                    cursor: 'pointer',
                     ...cardGlassBase,
                     background: 'rgba(247,243,236,0.52)',
                   }}>
